@@ -98,6 +98,17 @@ func main() {
 			newFeatureCollection.Features = append(newFeatureCollection.Features, v.Features...)
 		}
 	}
+
+	// Add z, x, y to feature properties
+	for _, feature := range newFeatureCollection.Features {
+		if feature.Properties == nil {
+			feature.Properties = make(map[string]interface{})
+		}
+		feature.Properties["z"] = tile.Z
+		feature.Properties["x"] = tile.X
+		feature.Properties["y"] = tile.Y
+	}
+
 	geojsonContent, err := newFeatureCollection.MarshalJSON()
 	if err != nil {
 		fatal.Fatalln(err)
